@@ -1,0 +1,22 @@
+# Dependencies
+/node_modules
+
+# Build outputs
+/dist
+/build
+/out
+
+# Logs and Data
+npm-debug.log*
+.log
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Environment Variables
+.env
+.env.*
+
+# Keep the actual package-lock file since it's critical for Node.js projects
+# /package-lock.json (DO NOT IGNORE THIS LINE)

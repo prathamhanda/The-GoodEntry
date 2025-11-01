@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Event - The Good Entry</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .create-event-container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .create-event-container h2 {
+      color: #1f2937;
+      margin-bottom: 30px;
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      color: #374151;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: #10b981;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background: #059669;
+    }
+
+    .login-prompt {
+      text-align: center;
+      padding: 40px;
+      background: #f8fafc;
+      border-radius: 15px;
+    }
+
+    .login-prompt h3 {
+      color: #1f2937;
+      margin-bottom: 15px;
+    }
+
+    .login-prompt p {
+      color: #6b7280;
+      margin-bottom: 25px;
+    }
+  </style>
+  <script>
+    // Check if user is logged in
+    document.addEventListener('DOMContentLoaded', () => {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      
+      if (!isLoggedIn) {
+        // Show login prompt
+        const main = document.querySelector('main');
+        main.innerHTML = `
+          <div class="login-prompt">
+            <h3>Please Log In</h3>
+            <p>You need to be logged in to create an event.</p>
+            <a href="login.html" class="btn btn-find" style="display: inline-block; text-decoration: none;">Log In</a>
+          </div>
+        `;
+      } else {
+        // User is logged in, show the form
+        const main = document.querySelector('main');
+        main.innerHTML = `
+          <div class="create-event-container">
+            <h2>Create an Event</h2>
+            <form id="createEventForm">
+              <div class="form-group">
+                <label for="title">Event Title *</label>
+                <input type="text" id="title" required placeholder="e.g., Winter Beach Cleanup">
+              </div>
+              
+              <div class="form-group">
+                <label for="description">Description *</label>
+                <textarea id="description" required placeholder="Describe your event..."></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="quickDescription">Quick Description</label>
+                <textarea id="quickDescription" placeholder="A short summary of your event"></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="date">Date *</label>
+                <input type="date" id="date" required>
+              </div>
+
+              <div class="form-group">
+                <label for="time">Time *</label>
+                <input type="text" id="time" required placeholder="e.g., 9:00 AM - 12:00 PM">
+              </div>
+              
+              <div class="form-group">
+                <label for="location">Location *</label>
+                <input type="text" id="location" required placeholder="Full address">
+              </div>
+              
+              <div class="form-group">
+                <label for="category">Category *</label>
+                <select id="category" required>
+                  <option value="">Select a category</option>
+                  <option value="Environmental">Environmental</option>
+                  <option value="Community Service">Community Service</option>
+                  <option value="Education">Education</option>
+                  <option value="Animal Welfare">Animal Welfare</option>
+                  <option value="Health & Wellness">Health & Wellness</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="organizer">Organizer Name *</label>
+                <input type="text" id="organizer" required placeholder="Your name or organization name">
+              </div>
+
+              <div class="form-group">
+                <label for="image">Event Image URL</label>
+                <input type="url" id="image" placeholder="https://...">
+              </div>
+
+              <div class="form-group">
+                <label for="maxVolunteers">Max Volunteers</label>
+                <input type="number" id="maxVolunteers" value="20" min="1">
+              </div>
+              
+              <button type="submit" class="submit-btn">Create Event</button>
+            </form>
+          </div>
+        `;
+
+        // Add form submission handler
+        document.getElementById('createEventForm').addEventListener('submit', createEvent);
+      }
+    });
+
+    function handleLogout(event) {
+      if (event) event.preventDefault();
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userName');
+      window.location.href = 'index.html';
+    }
+
+    async function createEvent(event) {
+      event.preventDefault();
+      
+      const eventData = {
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        quickDescription: document.getElementById('quickDescription').value,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        location: document.getElementById('location').value,
+        category: document.getElementById('category').value,
+        organizer: document.getElementById('organizer').value,
+        image: document.getElementById('image').value,
+        maxVolunteers: parseInt(document.getElementById('maxVolunteers').value)
+      };
+
+      try {
+        const response = await fetch('/api/events', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(eventData)
+        });
+
+        if (response.ok) {
+          const newEvent = await response.json();
+          alert('Event created successfully! 🎉');
+          window.location.href = `event-detail.html?id=${newEvent._id}`;
+        } else {
+          alert('Failed to create event. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error creating event:', error);
+        alert('An error occurred while creating the event.');
+      }
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>The Good Entry</h1>
+    <nav>
+      <a href="/index.html">Home</a>
+      <a href="/events.html">Browse Events</a>
+      <a href="#" onclick="handleLogout()" style="color: #dc2626;">Log Out</a>
+    </nav>
+  </header>
+
+  <main style="background: #f8fafc; min-height: 100vh; padding: 20px;">
+    <!-- Content will be dynamically generated based on login status -->
+  </main>
+</body>
+</html>
+
+

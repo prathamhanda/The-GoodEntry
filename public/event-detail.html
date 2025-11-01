@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Details - The Good Entry</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>The Good Entry</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="events.html">Find Events</a>
+      <a href="#" onclick="handleLogout()" style="color: #dc2626;">Log Out</a>
+    </nav>
+  </header>
+
+  <main id="event-detail-container" style="background: #f8fafc; min-height: 100vh; padding: 20px;">
+    <p>Loading Event Details...</p>
+  </main>
+
+  <script>
+    const DUMMY_USER_ID = "67209f0b1234567890abcd";
+    const STATIC_EVENTS = [
+      {
+        _id: "city-park-cleanup",
+        title: "City Park Cleanup & Beautification",
+       image: "./city_cleanup.webp",
+        day: "Saturday",
+        time: "9:00 AM - 12:30 PM",
+        location: "Ridgeview City Park, Downtown",
+        quickDescription: "Help refresh the heart of the city by removing litter, planting pollinator-friendly flowers, and refreshing community signage in Ridgeview Park.",
+        description: `We are partnering with the Ridgeview Parks Department to refresh garden beds, repaint benches, and collect litter throughout the park. Volunteers will be grouped into teams to tackle different zones and will receive quick training on safe cleanup practices. Family-friendly stations are available for younger helpers as well.`,
+        organizer: "GreenSteps Volunteers",
+        organizationInfo: {
+          name: "GreenSteps Volunteers",
+          description: "A grassroots nonprofit dedicated to keeping public green spaces vibrant through hands-on volunteer projects and environmental education.",
+          website: "https://greensteps.org",
+          contactEmail: "hello@greensteps.org"
+        },
+        preparationInstructions: "Check-in opens at 8:45 AM next to the park pavilion. Look for the GreenSteps banner to pick up gloves, litter grabbers, and paint supplies.",
+        requirements: [
+          "Comfortable closed-toe shoes",
+          "Ability to move around the park for up to three hours",
+          "Waiver signed on-site (provided)"
+        ],
+        whatToBring: [
+          "Reusable water bottle",
+          "Hat or sun visor",
+          "Work gloves (optional)"
+        ],
+        maxVolunteers: 30,
+        volunteers: [
+          { _id: "vol-101", name: "Jamal Edwards", email: "jamal.edwards@example.com" },
+          { _id: "vol-102", name: "Priya Shah", email: "priya.shah@example.com" },
+          { _id: "vol-103", name: "Minh Tran", email: "minh.tran@example.com" }
+        ],
+        volunteerFeedback: [
+          {
+            volunteerName: "Sasha M.",
+            rating: 5,
+            comment: "Loved meeting neighbors and seeing the park transform in just a few hours.",
+            date: "2024-11-05"
+          },
+          {
+            volunteerName: "Eric M.",
+            rating: 4,
+            comment: "Great event with clear directions and plenty of supplies.",
+            date: "2024-08-19"
+          }
+        ],
+        isStatic: true
+      },
+      {
+        _id: "community-garden-planting",
+        title: "Spring Community Garden Planting Day",
+        image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=630&fit=crop",
+        date: "2025-04-05T08:30:00",
+        day: "Saturday",
+        time: "8:30 AM - 1:00 PM",
+        location: "Elm Street Community Garden, Midtown",
+        quickDescription: "Kick off the growing season by planting new veggie beds, setting up irrigation, and mentoring first-time gardeners at Elm Street Community Garden.",
+        description: `All skill levels are welcome for our spring planting kickoff. We'll prepare raised beds, sow early season vegetables, and install a drip irrigation line. If you are new to gardening, we will pair you with a mentor so you can learn as you go. Kids have a dedicated pollinator planting corner.`,
+        organizer: "Urban Harvest Collective",
+        organizationInfo: {
+          name: "Urban Harvest Collective",
+          description: "We activate vacant lots into thriving community gardens that improve access to fresh, affordable produce across the city.",
+          website: "https://urbanharvestcollective.org",
+          contactEmail: "team@urbanharvestcollective.org"
+        },
+        preparationInstructions: "Please arrive by 8:15 AM for light breakfast and station assignments. A brief garden orientation starts promptly at 8:30 AM.",
+        requirements: [
+          "Comfortable clothing you don't mind getting dirty",
+          "Ability to bend, squat, or kneel for extended periods",
+          "Garden orientation video watched in advance (link in confirmation email)"
+        ],
+        whatToBring: [
+          "Gardening gloves if you have them",
+          "Refillable mug for coffee or tea",
+          "Favourite hand tools (optional)"
+        ],
+        maxVolunteers: 24,
+        volunteers: [
+          { _id: "vol-201", name: "Luis Romero", email: "luis.romero@example.com" },
+          { _id: "vol-202", name: "Mei Chen", email: "mei.chen@example.com" },
+          { _id: "vol-203", name: "Hannah Lee", email: "hannah.lee@example.com" },
+          { _id: "vol-204", name: "Gabriela Ortiz", email: "gabriela.ortiz@example.com" }
+        ],
+        volunteerFeedback: [
+          {
+            volunteerName: "Jared M.",
+            rating: 5,
+            comment: "Fantastic group energy and I actually learned how to set up drip irrigation!",
+            date: "2024-10-11"
+          },
+          {
+            volunteerName: "Taylor B.",
+            rating: 4,
+            comment: "Loved mentoring new gardeners and seeing families working together.",
+            date: "2024-04-21"
+          }
+        ],
+        isStatic: true
+      },
+      {
+        _id: "food-bank-sorting",
+        title: "Food Bank Sorting & Delivery Prep",
+        image: "https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=1200&h=630&fit=crop",
+        date: "2025-02-15T13:00:00",
+        day: "Saturday",
+        time: "1:00 PM - 4:30 PM",
+        location: "Harborview Regional Food Bank, Warehouse 3",
+        quickDescription: "Join our afternoon crew to sort donations, assemble pantry boxes, and prep delivery routes for Harborview families in need.",
+        description: `Volunteers help us inspect, sort, and pack food donations for distribution to partner pantries and direct delivery clients. We will also assemble hygiene kits and load the evening delivery vans. Orientation and safety briefing happen at the start of the shift. Closed-toe shoes are required for the warehouse floor.`,
+        organizer: "Harborview Mutual Aid",
+        organizationInfo: {
+          name: "Harborview Mutual Aid",
+          description: "Community-powered mutual aid network delivering groceries, diapers, and hygiene supplies to 1,200 households every month.",
+          website: "https://harborviewmutualaid.org",
+          contactEmail: "volunteer@harborviewmutualaid.org"
+        },
+        preparationInstructions: "Parking is available in Lot C. Please check in at the volunteer desk by 12:45 PM for a nametag and safety vest.",
+        requirements: [
+          "Closed-toe shoes and comfortable clothing",
+          "Ability to lift up to 25 lbs or request a seated station",
+          "Complete brief safety waiver on arrival"
+        ],
+        whatToBring: [
+          "Water bottle",
+          "Light sweater (warehouse is cool)",
+          "Phone with flashlight (optional)"
+        ],
+        maxVolunteers: 40,
+        volunteers: [
+          { _id: "vol-301", name: "Amelia King", email: "amelia.king@example.com" },
+          { _id: "vol-302", name: "Noah Bryant", email: "noah.bryant@example.com" },
+          { _id: "vol-303", name: "Saanvi Patel", email: "saanvi.patel@example.com" },
+          { _id: "vol-304", name: "Ethan Brooks", email: "ethan.brooks@example.com" },
+          { _id: "vol-305", name: "Olivia Park", email: "olivia.park@example.com" }
+        ],
+        volunteerFeedback: [
+          {
+            volunteerName: "Maya R.",
+            rating: 5,
+            comment: "Everything was so organized and impactful. Highly recommend this shift!",
+            date: "2024-12-02"
+          }
+        ],
+        isStatic: true
+      },
+      {
+        _id: "river-restoration-day",
+        title: "River Restoration Kayak Patrol",
+        image: "https://images.unsplash.com/photo-1499678329028-101435549a4e?w=1200&h=630&fit=crop",
+        date: "2025-05-10T07:30:00",
+        day: "Saturday",
+        time: "7:30 AM - 12:00 PM",
+        location: "Blue Heron Launch, Bay River",
+        quickDescription: "Paddle the Bay River while removing floating debris, recording wildlife sightings, and installing new shoreline plantings.",
+        description: `Certified river guides will lead small teams in kayaks to collect trash from hard-to-reach inlets and to document wildlife activity for our partners at the Coastal Ecology Lab. Onshore volunteers will plant native marsh grasses to prevent erosion. Kayak experience is helpful but not required; basic instruction is provided.`,
+        organizer: "Bay River Stewards",
+        organizationInfo: {
+          name: "Bay River Stewards",
+          description: "Volunteer-led coalition protecting the Bay River watershed through cleanups, data collection, and restoration projects.",
+          website: "https://bayriverstewards.org",
+          contactEmail: "info@bayriverstewards.org"
+        },
+        preparationInstructions: "Arrive 15 minutes early to be fitted with a PFD and to review the water safety briefing. On-water teams launch promptly at 8:00 AM.",
+        requirements: [
+          "Must be 16+ to join kayak teams",
+          "Comfortable on the water and able to paddle for 90 minutes",
+          "Completed liability waiver submitted online"
+        ],
+        whatToBring: [
+          "Quick-dry clothing",
+          "Waterproof bag for personal items",
+          "Change of clothes and towel"
+        ],
+        maxVolunteers: 28,
+        volunteers: [
+          { _id: "vol-401", name: "Devon Harris", email: "devon.harris@example.com" },
+          { _id: "vol-402", name: "Isabella Ruiz", email: "isabella.ruiz@example.com" },
+          { _id: "vol-403", name: "Marcus Allen", email: "marcus.allen@example.com" },
+          { _id: "vol-404", name: "Nia Jefferson", email: "nia.jefferson@example.com" }
+        ],
+        volunteerFeedback: [
+          {
+            volunteerName: "Samira L.",
+            rating: 5,
+            comment: "Kayaking with a purpose was incredible. The guides kept everyone safe and energized.",
+            date: "2024-09-14"
+          },
+          {
+            volunteerName: "Jordan P.",
+            rating: 4,
+            comment: "Loved planting along the shoreline and learning about native species.",
+            date: "2024-07-08"
+          }
+        ],
+        isStatic: true
+      },
+      {
+        _id: "senior-tech-mentorship",
+        title: "Senior Center Tech Mentorship",
+        image: "https://images.unsplash.com/photo-1526498460520-4c246339dccb?w=1200&h=630&fit=crop",
+        date: "2025-01-18T10:00:00",
+        day: "Saturday",
+        time: "10:00 AM - 1:30 PM",
+        location: "Sunrise Senior Center, Westwood",
+        quickDescription: "Support older adults with one-on-one tech mentoring sessions covering smartphones, telehealth apps, and staying safe online.",
+        description: `Our tech mentors work one-on-one with seniors on the devices they bring from home. We provide conversation starters, lesson prompts, and troubleshooting guides. Sessions last 30 minutes each, with coffee and snacks between. If you speak another language, let us know so we can match you appropriately.`,
+        organizer: "Connect Across Generations",
+        organizationInfo: {
+          name: "Connect Across Generations",
+          description: "We build meaningful relationships between older adults and tech-savvy volunteers through facilitated mentorship programs.",
+          website: "https://connectacrossgenerations.org",
+          contactEmail: "volunteer@connectacrossgenerations.org"
+        },
+        preparationInstructions: "A brief mentor huddle starts at 9:40 AM with the program coordinator. Materials and Wi-Fi access will be provided.",
+        requirements: [
+          "Patient communication style",
+          "Comfortable navigating smartphones and tablets",
+          "Background check on file (instructions emailed after sign-up)"
+        ],
+        whatToBring: [
+          "Charged laptop or tablet (optional)",
+          "Notebook for tips the seniors can take home",
+          "Positive attitude"
+        ],
+        maxVolunteers: 18,
+        volunteers: [
+          { _id: "vol-501", name: "Aisha Grant", email: "aisha.grant@example.com" },
+          { _id: "vol-502", name: "Connor Blake", email: "connor.blake@example.com" },
+          { _id: "vol-503", name: "Fatima Al-Hassan", email: "fatima.alhassan@example.com" }
+        ],
+        volunteerFeedback: [
+          {
+            volunteerName: "Nora K.",
+            rating: 5,
+            comment: "My mentee was so appreciative. The training materials made it easy to guide her.",
+            date: "2024-06-29"
+          }
+        ],
+        isStatic: true
+      }
+    ];
+
+    function formatDate(dateString) {
+      const parsed = new Date(dateString);
+      if (Number.isNaN(parsed.getTime())) {
+        return "Date TBD";
+      }
+      return parsed.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    }
+
+    function formatWeekday(dateString) {
+      const parsed = new Date(dateString);
+      if (Number.isNaN(parsed.getTime())) {
+        return "Day TBD";
+      }
+      return parsed.toLocaleDateString("en-US", { weekday: "long" });
+    }
+
+    function handleLogout(event) {
+      if (event) event.preventDefault();
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userName');
+      window.location.href = 'index.html';
+    } 
+
+    async function loadEventDetail() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const eventId = urlParams.get('id');
+
+      if (!eventId) {
+        renderStaticEventLanding("Select an event below to view its full details.");
+        return;
+      }
+
+      const staticEvent = STATIC_EVENTS.find(event => event._id === eventId);
+      if (staticEvent) {
+        renderEvent(staticEvent);
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/events/${eventId}`);
+        if (!res.ok) {
+          throw new Error("Event not found");
+        }
+        const event = await res.json();
+        renderEvent(event);
+      } catch (error) {
+        renderStaticEventLanding("We could not load that event from the server. Explore our featured events below.");
+      }
+    }
+
+    function renderEvent(e) {
+      const container = document.getElementById("event-detail-container");
+      const volunteers = Array.isArray(e.volunteers) ? e.volunteers : [];
+      const volunteerCount = volunteers.length;
+      const volunteersList = volunteerCount
+        ? volunteers.map(v => `
+            <li>${v.name || 'Anonymous'} (${v.email || 'No email'})</li>
+          `).join("")
+        : '<li class="no-volunteers">No volunteers yet. Be the first!</li>';
+
+      const feedback = Array.isArray(e.volunteerFeedback) ? e.volunteerFeedback : [];
+      const feedbackList = feedback.length ? feedback.map(f => `
+        <div class="feedback-item">
+          <div class="feedback-header">
+            <strong>${f.volunteerName}</strong>
+            <div class="rating">${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}</div>
+          </div>
+          <p class="feedback-comment">"${f.comment}"</p>
+          <small class="feedback-date">${formatDate(f.date)}</small>
+        </div>
+      `).join("") : '<p class="empty-feedback">No feedback yet. Be the first to share your experience!</p>';
+
+      const requirementsList = Array.isArray(e.requirements) ? e.requirements.map(req => `<li>${req}</li>`).join("") : "";
+      const whatToBringList = Array.isArray(e.whatToBring) ? e.whatToBring.map(item => `<li>${item}</li>`).join("") : "";
+      const eventDay = e.day || formatWeekday(e.date);
+      const eventDate = formatDate(e.date);
+
+      container.innerHTML = `
+        <div class="event-detail">
+          ${e.image ? `<img src="${e.image}" alt="${e.title}" class="event-hero-image">` : ''}
+          
+          <div class="event-header">
+            <h1>${e.title}</h1>
+            <div class="event-meta-info">
+              <div class="meta-item">
+                <span class="meta-icon">📅</span>
+                <div class="meta-content">
+                  <strong>${eventDay}</strong>
+                  <span>${eventDate}</span>
+                </div>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">🕐</span>
+                <div class="meta-content">
+                  <strong>Time</strong>
+                  <span>${e.time || 'TBD'}</span>
+                </div>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">📍</span>
+                <div class="meta-content">
+                  <strong>Location</strong>
+                  <span>${e.location}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="event-sections">
+            <section class="event-section">
+              <h2>About This Event</h2>
+              <p class="quick-description">${e.quickDescription || e.description}</p>
+              <div class="full-description">${e.description}</div>
+            </section>
+
+            ${e.organizationInfo ? `
+            <section class="event-section">
+              <h2>About the Organization</h2>
+              <div class="organization-info">
+                <h3>${e.organizationInfo.name || e.organizer}</h3>
+                <p>${e.organizationInfo.description || 'A dedicated organization committed to community service and environmental conservation.'}</p>
+                ${e.organizationInfo.website ? `<p><strong>Website:</strong> <a href="${e.organizationInfo.website}" target="_blank">${e.organizationInfo.website}</a></p>` : ''}
+                ${e.organizationInfo.contactEmail ? `<p><strong>Contact:</strong> ${e.organizationInfo.contactEmail}</p>` : ''}
+              </div>
+            </section>
+            ` : ''}
+
+            <section class="event-section">
+              <h2>Volunteer Feedback</h2>
+              <div class="feedback-section">
+                ${feedbackList}
+              </div>
+            </section>
+
+            <section class="event-section">
+              <h2>How to Prepare</h2>
+              <div class="preparation-info">
+                ${e.preparationInstructions ? `<p>${e.preparationInstructions}</p>` : ''}
+                
+                ${requirementsList ? `
+                <h4>Requirements:</h4>
+                <ul class="requirements-list">${requirementsList}</ul>
+                ` : ''}
+                
+                ${whatToBringList ? `
+                <h4>What to Bring:</h4>
+                <ul class="what-to-bring-list">${whatToBringList}</ul>
+                ` : ''}
+              </div>
+            </section>
+
+            <section class="event-section">
+              <h2>Volunteers Signed Up (${volunteerCount}/${e.maxVolunteers || 20})</h2>
+              <ul class="volunteers-list">${volunteersList}</ul>
+            </section>
+          </div>
+
+          <div class="action-section">
+            <button id="join-btn" onclick="joinEvent('${e._id}')" class="join-event-btn">
+              Join this Event
+            </button>
+          </div>
+        </div>
+      `;
+      
+      const joinBtn = document.getElementById("join-btn");
+      if (!joinBtn) {
+        return;
+      }
+
+      if (e.isStatic) {
+        joinBtn.textContent = "Contact organizer to join";
+        joinBtn.disabled = true;
+        return;
+      }
+
+      if (volunteers.some(v => v._id === DUMMY_USER_ID)) {
+        joinBtn.textContent = "You have joined!";
+        joinBtn.disabled = true;
+      }
+    }
+
+    function renderStaticEventLanding(message) {
+      const container = document.getElementById("event-detail-container");
+      const infoMessage = message ? `<div class="static-events-message">${message}</div>` : "";
+      if (!STATIC_EVENTS.length) {
+        container.innerHTML = infoMessage || '<p>No featured events available right now.</p>';
+        return;
+      }
+
+      container.innerHTML = `
+        <section class="static-events-landing">
+          ${infoMessage}
+          <h2>Featured Volunteer Events</h2>
+          <p class="static-events-lead">Pick an event below to explore full details and see how you can get involved.</p>
+          <div class="static-events-grid">
+            ${STATIC_EVENTS.map(event => `
+              <article class="static-event-card">
+                <img src="${event.image || 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=400&fit=crop'}" alt="${event.title}">
+                <div class="static-event-card-content">
+                  <h3>${event.title}</h3>
+                  <p>${event.quickDescription}</p>
+                  <ul class="static-event-meta">
+                    <li>📅 ${formatDate(event.date)}</li>
+                    <li>🕒 ${event.time || 'TBD'}</li>
+                    <li>📍 ${event.location}</li>
+                  </ul>
+                  <a class="static-event-link" href="?id=${event._id}">View full details</a>
+                </div>
+              </article>
+            `).join("")}
+          </div>
+        </section>
+      `;
+    }
+    
+    async function joinEvent(id) {
+      if (STATIC_EVENTS.some(event => event._id === id)) {
+        alert("This featured event is part of our demo experience. Please contact the organizer to join.");
+        return;
+      }
+
+      const joinBtn = document.getElementById("join-btn");
+      if (!joinBtn) {
+        return;
+      }
+
+      const userId = DUMMY_USER_ID; 
+
+      if (joinBtn.disabled) return;
+      joinBtn.disabled = true;
+      joinBtn.textContent = "Joining...";
+
+      try {
+        const res = await fetch(`/api/events/${id}/join`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId })
+        });
+
+        if (!res.ok) {
+          const error = await res.json();
+          throw new Error(error.error || "Failed to join event.");
+        }
+        
+        alert("🎉 Joined event successfully! Thank you for volunteering.");
+        loadEventDetail(); // Reload details to show the updated volunteer list
+      } catch (err) {
+        alert(`Could not join event: ${err.message}`);
+        joinBtn.disabled = false;
+        joinBtn.textContent = "Join this Event";
+      }
+    }
+
+    loadEventDetail();
+  </script>
+  
+  <style>
+    .event-hero-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 30px;
+    }
+
+    .event-header {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .event-header h1 {
+      color: #1f2937;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .event-meta-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+      background: #f8fafc;
+      border-radius: 10px;
+    }
+
+    .meta-icon {
+      font-size: 1.5rem;
+    }
+
+    .meta-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .meta-content strong {
+      color: #1f2937;
+      font-weight: 600;
+    }
+
+    .meta-content span {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    .event-sections {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .event-section {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .event-section h2 {
+      color: #1f2937;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .quick-description {
+      font-size: 1.1rem;
+      color: #374151;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+
+    .full-description {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .organization-info h3 {
+      color: #1f2937;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .organization-info p {
+      color: #6b7280;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .organization-info a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+
+    .organization-info a:hover {
+      text-decoration: underline;
+    }
+
+    .feedback-item {
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .feedback-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .feedback-header strong {
+      color: #1f2937;
+    }
+
+    .rating {
+      color: #fbbf24;
+      font-size: 1.2rem;
+    }
+
+    .feedback-comment {
+      color: #374151;
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+
+    .feedback-date {
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+
+    .preparation-info h4 {
+      color: #1f2937;
+      margin: 20px 0 10px 0;
+      font-weight: 600;
+    }
+
+    .requirements-list, .what-to-bring-list {
+      color: #6b7280;
+      padding-left: 20px;
+    }
+
+    .requirements-list li, .what-to-bring-list li {
+      margin-bottom: 5px;
+    }
+
+    .volunteers-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .volunteers-list li {
+      padding: 10px;
+      background: #f8fafc;
+      margin-bottom: 5px;
+      border-radius: 8px;
+      color: #374151;
+    }
+
+    .action-section {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .join-event-btn {
+      background: #10b981;
+      color: white;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .join-event-btn:hover:not(:disabled) {
+      background: #059669;
+      transform: translateY(-2px);
+    }
+
+    .join-event-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .static-events-landing {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    .static-events-message {
+      background: #ecfdf5;
+      border: 1px solid #6ee7b7;
+      color: #047857;
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .static-events-lead {
+      color: #4b5563;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    .static-events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 25px;
+    }
+
+    .static-event-card {
+      background: #f8fafc;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .static-event-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .static-event-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .static-event-card-content {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .static-event-card-content h3 {
+      color: #1f2937;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .static-event-card-content p {
+      color: #4b5563;
+      line-height: 1.5;
+      flex-grow: 1;
+    }
+
+    .static-event-meta {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      color: #6b7280;
+      font-size: 0.95rem;
+    }
+
+    .static-event-link {
+      display: inline-block;
+      margin-top: 6px;
+      color: #2563eb;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .static-event-link:hover {
+      text-decoration: underline;
+    }
+
+    .no-volunteers {
+      text-align: center;
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    .empty-feedback {
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .event-header h1 {
+        font-size: 2rem;
+      }
+      
+      .event-meta-info {
+        grid-template-columns: 1fr;
+      }
+      
+      .event-section, .event-header, .action-section {
+        padding: 20px;
+      }
+
+      .static-events-landing {
+        padding: 20px;
+      }
+
+      .static-events-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .static-event-card-content {
+        padding: 16px;
+      }
+    }
+  </style>
+</body>
+</html>
