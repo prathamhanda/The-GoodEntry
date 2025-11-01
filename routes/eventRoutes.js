@@ -128,12 +128,6 @@ router.get("/", async (req, res) => {
             rating: 5,
             comment: "Such a rewarding experience! I learned so much about sustainable gardening.",
             date: new Date("2023-10-20")
-          },
-          {
-            volunteerName: "James Wilson",
-            rating: 5,
-            comment: "Great community spirit! My kids loved learning about where food comes from.",
-            date: new Date("2023-10-15")
           }
         ],
         volunteers: [
@@ -171,12 +165,6 @@ router.get("/", async (req, res) => {
             rating: 5,
             comment: "Humbling experience. The gratitude from guests was overwhelming.",
             date: new Date("2023-12-22")
-          },
-          {
-            volunteerName: "Kevin Park",
-            rating: 5,
-            comment: "Made me appreciate what I have. Everyone was so welcoming and kind.",
-            date: new Date("2023-12-18")
           }
         ],
         volunteers: [
@@ -212,12 +200,6 @@ router.get("/", async (req, res) => {
             rating: 5,
             comment: "So rewarding to see seniors' faces light up when they send their first text!",
             date: new Date("2024-01-10")
-          },
-          {
-            volunteerName: "Michael Chang",
-            rating: 4,
-            comment: "Great program! The seniors were eager to learn and very appreciative.",
-            date: new Date("2024-01-05")
           }
         ],
         volunteers: [
@@ -256,12 +238,6 @@ router.get("/", async (req, res) => {
             rating: 5,
             comment: "Best way to spend a Saturday! So many happy tail wags and purrs.",
             date: new Date("2023-11-20")
-          },
-          {
-            volunteerName: "Alex Rodriguez",
-            rating: 5,
-            comment: "Seeing pets find forever homes was the highlight of my month!",
-            date: new Date("2023-11-15")
           }
         ],
         volunteers: [
@@ -285,56 +261,10 @@ router.get("/:id", async (req, res) => {
     }
     res.json(event);
   } catch (err) {
-    // Mock data when database is not available
-    const mockEvent = {
-      _id: req.params.id,
-      title: "Winter Beach Cleanup",
-      description: "Join us for a comprehensive beach cleanup to remove plastic waste, debris, and other pollutants from our beautiful coastline. This event is part of our ongoing effort to protect marine life and maintain clean beaches for everyone to enjoy. We'll provide all necessary equipment including gloves, bags, and pickers. All skill levels welcome!",
-      quickDescription: "Help clean up our beautiful coastline and protect marine life from plastic pollution.",
-      date: new Date("2024-01-15"),
-      time: "9:00 AM - 12:00 PM",
-      day: "Saturday",
-      location: "Jones Beach, 1 Ocean Pkwy, Wantagh, NY 11793",
-      category: "Environmental",
-      organizer: "Ocean Conservation Society",
-      organizationInfo: {
-        name: "Ocean Conservation Society",
-        description: "A non-profit organization dedicated to protecting marine ecosystems and promoting sustainable ocean practices. We've been organizing beach cleanups and marine conservation efforts for over 10 years.",
-        website: "https://oceanconservation.org",
-        contactEmail: "info@oceanconservation.org"
-      },
-      image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=400&fit=crop",
-      maxVolunteers: 30,
-      preparationInstructions: "Please arrive 15 minutes early for check-in and safety briefing. The cleanup will involve walking on sand and potentially wet areas, so wear appropriate footwear. We'll be working rain or shine, so dress for the weather.",
-      requirements: ["Must be 16 years or older (or accompanied by adult)", "Ability to walk on sand for 2-3 hours", "Comfortable with physical activity"],
-      whatToBring: ["Water bottle (we'll provide refills)", "Sunscreen and hat", "Comfortable walking shoes", "Layers for changing weather"],
-      volunteerFeedback: [
-        {
-          volunteerName: "Sarah Johnson",
-          rating: 5,
-          comment: "Amazing experience! The organizers were so well-prepared and the impact was immediately visible. I'll definitely be back!",
-          date: new Date("2023-12-10")
-        },
-        {
-          volunteerName: "Mike Chen",
-          rating: 4,
-          comment: "Great way to give back to the community. The team was friendly and the work was rewarding. Highly recommend!",
-          date: new Date("2023-12-05")
-        },
-        {
-          volunteerName: "Emily Rodriguez",
-          rating: 5,
-          comment: "This organization really knows what they're doing. The cleanup was well-organized and I learned a lot about marine conservation.",
-          date: new Date("2023-11-28")
-        }
-      ],
-      volunteers: [
-        { name: "John Smith", email: "john@email.com" },
-        { name: "Maria Garcia", email: "maria@email.com" },
-        { name: "Robert Johnson", email: "robert@email.com" }
-      ]
-    };
-    res.json(mockEvent);
+    // Corrected to send a 500 status on server/DB error, which allows
+    // the client-side JS to display its proper fallback message.
+    console.error("Error fetching single event:", err);
+    return res.status(500).json({ error: "Server error: Database might be offline or ID invalid." });
   }
 });
 
