@@ -27,7 +27,7 @@
       {
         _id: "city-park-cleanup",
         title: "City Park Cleanup & Beautification",
-       image: "/images/city_cleanup.webp", // <-- IMAGE PATH FIXED
+       image: "/images/city-cleanup.webp", // <-- UPDATED TO LOCAL PATH
         day: "Saturday",
         time: "9:00 AM - 12:30 PM",
         location: "Ridgeview City Park, Downtown",
@@ -76,7 +76,7 @@
       {
         _id: "community-garden-planting",
         title: "Spring Community Garden Planting Day",
-        image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=630&fit=crop",
+        image: "/images/garden-planting.webp", // <-- UPDATED TO LOCAL PATH
         date: "2025-04-05T08:30:00",
         day: "Saturday",
         time: "8:30 AM - 1:00 PM",
@@ -114,12 +114,6 @@
             rating: 5,
             comment: "Fantastic group energy and I actually learned how to set up drip irrigation!",
             date: "2024-10-11"
-          },
-          {
-            volunteerName: "Taylor B.",
-            rating: 4,
-            comment: "Loved mentoring new gardeners and seeing families working together.",
-            date: "2024-04-21"
           }
         ],
         isStatic: true
@@ -127,7 +121,7 @@
       {
         _id: "food-bank-sorting",
         title: "Food Bank Sorting & Delivery Prep",
-        image: "https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=1200&h=630&fit=crop",
+        image: "/images/food-bank.webp", // <-- UPDATED TO LOCAL PATH
         date: "2025-02-15T13:00:00",
         day: "Saturday",
         time: "1:00 PM - 4:30 PM",
@@ -170,61 +164,11 @@
         ],
         isStatic: true
       },
-      {
-        _id: "river-restoration-day",
-        title: "River Restoration Kayak Patrol",
-        image: "https://images.unsplash.com/photo-1499678329028-101435549a4e?w=1200&h=630&fit=crop",
-        date: "2025-05-10T07:30:00",
-        day: "Saturday",
-        time: "7:30 AM - 12:00 PM",
-        location: "Blue Heron Launch, Bay River",
-        quickDescription: "Paddle the Bay River while removing floating debris, recording wildlife sightings, and installing new shoreline plantings.",
-        description: `Certified river guides will lead small teams in kayaks to collect trash from hard-to-reach inlets and to document wildlife activity for our partners at the Coastal Ecology Lab. Onshore volunteers will plant native marsh grasses to prevent erosion. Kayak experience is helpful but not required; basic instruction is provided.`,
-        organizer: "Bay River Stewards",
-        organizationInfo: {
-          name: "Bay River Stewards",
-          description: "Volunteer-led coalition protecting the Bay River watershed through cleanups, data collection, and restoration projects.",
-          website: "https://bayriverstewards.org",
-          contactEmail: "info@bayriverstewards.org"
-        },
-        preparationInstructions: "Arrive 15 minutes early to be fitted with a PFD and to review the water safety briefing. On-water teams launch promptly at 8:00 AM.",
-        requirements: [
-          "Must be 16+ to join kayak teams",
-          "Comfortable on the water and able to paddle for 90 minutes",
-          "Completed liability waiver submitted online"
-        ],
-        whatToBring: [
-          "Quick-dry clothing",
-          "Waterproof bag for personal items",
-          "Change of clothes and towel"
-        ],
-        maxVolunteers: 28,
-        volunteers: [
-          { _id: "vol-401", name: "Devon Harris", email: "devon.harris@example.com" },
-          { _id: "vol-402", name: "Isabella Ruiz", email: "isabella.ruiz@example.com" },
-          { _id: "vol-403", name: "Marcus Allen", email: "marcus.allen@example.com" },
-          { _id: "vol-404", name: "Nia Jefferson", email: "nia.jefferson@example.com" }
-        ],
-        volunteerFeedback: [
-          {
-            volunteerName: "Samira L.",
-            rating: 5,
-            comment: "Kayaking with a purpose was incredible. The guides kept everyone safe and energized.",
-            date: "2024-09-14"
-          },
-          {
-            volunteerName: "Jordan P.",
-            rating: 4,
-            comment: "Loved planting along the shoreline and learning about native species.",
-            date: "2024-07-08"
-          }
-        ],
-        isStatic: true
-      },
+      // The River Restoration Kayak Patrol event has been removed as requested.
       {
         _id: "senior-tech-mentorship",
         title: "Senior Center Tech Mentorship",
-        image: "https://images.unsplash.com/photo-1526498460520-4c246339dccb?w=1200&h=630&fit=crop",
+        image: "/images/senior-tech.webp", // <-- UPDATED TO LOCAL PATH
         date: "2025-01-18T10:00:00",
         day: "Saturday",
         time: "10:00 AM - 1:30 PM",
@@ -308,14 +252,12 @@
 
       try {
         const res = await fetch(`/api/events/${eventId}`);
-        // The server is expected to throw a 404 or 500 on failure now
-        if (!res.ok) { 
+        if (!res.ok) {
           throw new Error("Event not found or server error.");
         }
         const event = await res.json();
         renderEvent(event);
       } catch (error) {
-        // This catch block now correctly handles failed database requests
         renderStaticEventLanding("We could not load that event from the server. Explore our featured events below.");
       }
     }
@@ -535,8 +477,9 @@
       border-radius: 15px;
       margin-bottom: 30px;
     }
+/* (The rest of the CSS remains the same as your previous event-detail.html) */
 
-    .event-header {
+.event-header {
       background: white;
       padding: 30px;
       border-radius: 15px;
