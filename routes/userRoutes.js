@@ -1,22 +1,28 @@
 import express from "express";
-import User from '../models/User.js';
+// Removed: import User from '../models/User.js';
 
 const router = express.Router();
 
-// Register user
-router.post("/register", async (req, res) => {
-  try {
-    const user = await User.create(req.body);
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+// Register user (Mock success)
+router.post("/register", (req, res) => {
+  // Mock a new user being created
+  const mockUser = {
+    _id: "mock-user-" + Date.now(),
+    name: req.body.name || "Mock User",
+    email: req.body.email || "mock@example.com",
+    role: "volunteer",
+    joinedEvents: [],
+  };
+  res.status(201).json(mockUser);
 });
 
-// Get all users
-router.get("/", async (req, res) => {
-  const users = await User.find();
-  res.json(users);
+// Get all users (Mock list)
+router.get("/", (req, res) => {
+  const mockUsers = [
+    { _id: "mock-user-1", name: "Alice", email: "alice@mock.com" },
+    { _id: "mock-user-2", name: "Bob", email: "bob@mock.com" }
+  ];
+  res.json(mockUsers);
 });
 
 export default router;
